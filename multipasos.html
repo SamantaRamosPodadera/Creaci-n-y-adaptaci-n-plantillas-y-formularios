@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Formulario Samanta Ramos</title>
+ <style>
+   /* Estilo base para el formulario */
+   body {
+     font-family: Arial, sans-serif;
+     margin: 0;
+     padding: 0;
+     background-color: #f4f4f9;
+     color: #34495e;
+   }
+
+   /* Estilo para los campos requeridos (obligatorios), con color rojo */
+   .required { color: #e74c3c; }
+   /* Estilo para los campos opcionales */
+   .optional { color: #3c4142; }
+   /* Estilo de los mensajes de error */
+   .error { color: #e74c3c; font-size: 0.9em; }
+   /* Estilo para campos que han sido validados correctamente */
+   .success { border: 2px solid #2ecc71; }
+   /* Estilo para campos que tienen el enfoque del usuario */
+   .focus { border: 2px solid #3498db; }
+   /* Estilo general para los elementos <fieldset> */
+   fieldset { display: none; margin-bottom: 20px; padding: 20px; border: 1px solid #393f40; border-radius: 7px; background-color: #93ddee; }
+   /* Estilo para el texto dentro de <legend> */
+   legend { font-weight: bold; font-size: 1.2em; color: #34495e; }
+   /* Estilo para los contenedores de los botones */
+   .button-container { display: flex; justify-content: space-between; margin-top: 20px; flex-wrap: wrap; }
+   /* Estilo para los botones */
+   .button { padding: 10px 20px; background-color: #63a3ce; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; }
+   /* Efecto de hover para los botones */
+   .button:hover { background-color: #2980b9; }
+   /* Mostrar solo el paso actual */
+   .step { display: none; }
+   .step.active { display: block; }
+
+   /* Ajustes para pantallas pequeñas */
+   @media (max-width: 600px) {
+     body {
+       padding: 10px;
+     }
+
+     h1, h2 {
+       text-align: center;
+     }
+
+     .button-container {
+       flex-direction: column;
+       align-items: center;
+     }
+
+     .button {
+       width: 100%;
+       margin-top: 10px;
+     }
+
+     fieldset {
+       padding: 15px;
+     }
+   }
+
+   /* Ajustes para pantallas medianas */
+   @media (max-width: 1024px) {
+     .button-container {
+       justify-content: center;
+     }
+
+     .button {
+       width: 48%;
+       margin-top: 10px;
+     }
+   }
+ </style>
+</head>
+<body>
+  <h1>Formulario:</h1>
+  <form id="miFormulario" action="procesar.php" method="post" onsubmit="return validarFormulario(event)">
+    <h2 id="formTitle">Por favor, complete el siguiente formulario</h2>
+
+    <!-- Paso 1: Información Personal -->
+    <fieldset id="personalStep" class="step active">
+      <legend>Información Personal</legend>
+      <div>
+        <label for="nombre">Nombre: <span class="required">*</span></label>
+        <input type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre" maxlength="50" required aria-required="true" onfocus="resaltarCampo(this)" onblur="validarNombre()">
+        <span class="error" id="nombreError"></span>
+      </div>
+      <br>
+      <div>
+        <label for="correo">Correo Electrónico: <span class="required">*</span></label>
+        <input type="email" id="correo" name="correo" placeholder="Ingrese su correo electrónico" required aria-required="true" onfocus="resaltarCampo(this)" onblur="validarCorreo()">
+        <span class="error" id="correoError"></span>
+      </div>
+      <br>
+      <div>
+        <label for="telefono">Teléfono: <span class="optional">(opcional)</span></label>
+        <input type="tel" id="telefono" name="telefono" placeholder="Ingrese su teléfono" onfocus="resaltarCampo(this)">
+      </div>
+      <br>
+    </fieldset>
+
+    <!-- Paso 2: Información de Seguridad -->
+    <fieldset id="securityStep" class="step">
+      <legend>Información de Seguridad</legend>
+      <div>
+        <label for="contrasena">Contraseña: <span class="required">*</span></label>
+        <input type="password" id="contrasena" name="contrasena" placeholder="Ingrese su contraseña" minlength="8" required aria-required="true" onfocus="resaltarCampo(this)" onblur="validarContrasena()">
+        <span class="error" id="contrasenaError"></span>
+      </div>
+      <br>
+    </fieldset>
+
+    <!-- Paso 3: Información Adicional -->
+    <fieldset id="additionalStep" class="step">
+      <legend>Información Adicional</legend>
+      <div>
+        <label for="edad">Edad: <span class="required">*</span></label>
+        <input type="number" id="edad" name="edad" placeholder="Ingrese su edad" min="0" max="120" required aria-required="true" onfocus="resaltarCampo(this)" onblur="validarEdad()">
+        <span class="error" id="edadError"></span>
+      </div>
+      <br>
+      <div>
+        <label for="fecha">Fecha de Nacimiento: <span class="required">*</span></label>
+        <input type="date" id="fecha" name="fecha" required aria-required="true" onfocus="resaltarCampo(this)" onblur="validarFecha()">
+        <span class="error" id="fechaError"></span>
+      </div>
+      <br>
+      <div>
+        <label for="comentarios">Comentarios: <span class="optional">(opcional)</span></label>
+        <textarea id="comentarios" name="comentarios" rows="4" cols="50" placeholder="Ingrese sus comentarios"></textarea>
+      </div>
+      <br>
+    </fieldset>
+
+    <!-- Botones de navegación -->
+    <div class="button-container">
+      <button type="button" class="button" id="prevBtn" onclick="cambiarPaso(-1)">Anterior</button>
+      <button type="button" class="button" id="nextBtn" onclick="cambiarPaso(1)">Siguiente</button>
+    </div>
+
+    <!-- Botón de Enviar -->
+    <div class="button-container">
+      <input type="submit" value="Enviar" class="button">
+    </div>
+  </form>
+
+  <script>
+    let currentStep = 0;
+
+    function resaltarCampo(elemento) {
+      elemento.classList.add('focus');
+      elemento.classList.remove('success');
+    }
+
+    function cambiarPaso(step) {
+      const pasos = document.querySelectorAll('.step');
+      if (step === 1 && !validarPaso(currentStep)) return; // Si no pasa la validación no avanzamos
+      pasos[currentStep].classList.remove('active');
+      currentStep += step;
+      if (currentStep >= pasos.length) currentStep = pasos.length - 1;
+      if (currentStep < 0) currentStep = 0;
+      pasos[currentStep].classList.add('active');
+      actualizarBotones();
+    }
+
+    function actualizarBotones() {
+      document.getElementById('prevBtn').style.display = currentStep === 0 ? 'none' : 'inline';
+      document.getElementById('nextBtn').style.display = currentStep === 2 ? 'none' : 'inline';
+    }
+
+    function validarNombre() {
+      const nombre = document.getElementById('nombre');
+      const nombreError = document.getElementById('nombreError');
+      if (!nombre.value.trim().match(/^[A-Za-z\s]+$/)) {
+        nombreError.textContent = 'El nombre solo puede contener letras y espacios.';
+        nombre.classList.remove('success');
+        return false;
+      } else {
+        nombreError.textContent = '';
+        nombre.classList.add('success');
+        return true;
+      }
+    }
+
+    function validarCorreo() {
+      const correo = document.getElementById('correo');
+      const correoError = document.getElementById('correoError');
+      if (!correo.value.trim().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        correoError.textContent = 'El correo electrónico no es válido.';
+        correo.classList.remove('success');
+        return false;
+      } else {
+        correoError.textContent = '';
+        correo.classList.add('success');
+        return true;
+      }
+    }
+
+    function validarContrasena() {
+      const contrasena = document.getElementById('contrasena');
+      const contrasenaError = document.getElementById('contrasenaError');
+      if (contrasena.value.length < 8) {
+        contrasenaError.textContent = 'La contraseña debe tener al menos 8 caracteres.';
+        contrasena.classList.remove('success');
+        return false;
+      } else {
+        contrasenaError.textContent = '';
+        contrasena.classList.add('success');
+        return true;
+      }
+    }
+
+    function validarEdad() {
+      const edad = document.getElementById('edad');
+      const edadError = document.getElementById('edadError');
+      if (edad.value <= 0 || edad.value > 120) {
+        edadError.textContent = 'La edad debe estar entre 0 y 120.';
+        edad.classList.remove('success');
+        return false;
+      } else {
+        edadError.textContent = '';
+        edad.classList.add('success');
+        return true;
+      }
+    }
+
+    function validarFecha() {
+      const fecha = document.getElementById('fecha');
+      const fechaError = document.getElementById('fechaError');
+      if (fecha.value === '') {
+        fechaError.textContent = 'La fecha de nacimiento es obligatoria.';
+        fecha.classList.remove('success');
+        return false;
+      } else {
+        fechaError.textContent = '';
+        fecha.classList.add('success');
+        return true;
+      }
+    }
+
+    function validarFormulario(event) {
+      const isValid = validarNombre() && validarCorreo() && validarContrasena() && validarEdad() && validarFecha();
+      if (!isValid) {
+        event.preventDefault();
+      }
+      return isValid;
+    }
+
+    function validarPaso(step) {
+      if (step === 0) {
+        return validarNombre() && validarCorreo(); // Solo valida los primeros dos campos
+      }
+      if (step === 1) {
+        return validarContrasena(); // Validar solo la contraseña
+      }
+      if (step === 2) {
+        return validarEdad() && validarFecha(); // Validar edad y fecha
+      }
+      return true;
+    }
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen Samanta Ramos Podadera</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            padding-bottom: 60px; /* espacio para el footer */
+        }
+
+        /* Encabezado */
+        header {
+            background-color: #4ca8af;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        /* Menú de navegación */
+        nav {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        /* Sección de contenido */
+        section {
+            padding: 20px;
+            background-color: white;
+            margin: 20px;
+        }
+
+        section h2 {
+            color: #333;
+        }
+
+        /* Formulario */
+        form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        input[type="text"], input[type="email"], input[type="submit"], button {
+            width: 100%;
+            padding: 12px 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4ca8af;
+            color: white;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #4553a0;
+        }
+
+        /* Pie de página fijo en la parte inferior */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* Validación de campos */
+        input:valid {
+            border-color: green;
+            background-color: #e0ffe0; /* Fondo verde claro */
+        }
+
+        input:invalid {
+            border-color: red;
+            background-color: #ffe0e0; /* Fondo rojo claro */
+        }
+
+        /* Casilla de verificación */
+        input[type="checkbox"]:checked ~ .campo-adicional {
+            display: block;
+        }
+
+        /* Ocultar el campo adicional por defecto */
+        .campo-adicional {
+
+            display: none;
+            margin-top: 10px;
+        }
+
+        /* Estilos responsive */
+        @media (max-width: 768px) {
+            input[type="text"], input[type="email"], button {
+                font-size: 16px;
+            }
+
+            button {
+                font-size: 18px;
+            }
+        }
+
+        /* Mensaje de éxito */
+        #mensaje-exito {
+            display: none;
+            background-color: #4ca8af;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Mostrar el mensaje de éxito cuando el formulario ha sido enviado */
+        #mensaje-exito:target {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Encabezado -->
+    <header>
+        <h1>Bienvenido a mi formulario</h1>
+    </header>
+
+    <!-- Menú de navegación -->
+    <nav>
+        <a href="#">Inicio</a>
+        <a href="#">Acerca de</a>
+        <a href="#">Contacto</a>
+    </nav>
+
+    <!-- Sección de contenido -->
+    <section>
+        <h2>Formulario de Contacto</h2>
+        <p>Por favor, completa los campos vacíos.</p>
+
+        <!-- Formulario -->
+        <form action="#mensaje-exito" method="post" novalidate aria-labelledby="formulario-contacto">
+            <div>
+                <label for="name" id="label-name">Nombre:</label>
+                <input type="text" id="name" name="name" required minlength="3" placeholder="Nombre ej:.Pepe" title="Mínimo 3 caracteres" aria-describedby="label-name" aria-required="true">
+            </div>
+
+            <div>
+                <label for="email" id="label-email">Correo Electrónico:</label>
+                <input type="email" id="email" name="email" required placeholder="Correo electrónico ej:.pepe@gmail.com" title="Ingresa correo electrónico válido" aria-describedby="label-email" aria-required="true">
+            </div>
+
+            <!-- Casilla de verificación para mostrar un campo adicional -->
+            <div>
+                <input type="checkbox" id="extraField" name="extraField" aria-describedby="extraFieldDescription">
+                <label for="extraField">¿Deseas agregar un mensaje adicional?</label>
+                <div id="extraFieldDescription" class="sr-only">Marca esta casilla si deseas agregar un mensaje adicional.</div>
+            </div>
+
+            <!-- Campo adicional que se muestra solo si la casilla está marcada -->
+            <div class="campo-adicional">
+                <label for="extraMessage" id="label-extraMessage">Mensaje Adicional:</label>
+                <input type="text" id="extraMessage" name="extraMessage" placeholder="Escribe tu mensaje aquí" aria-describedby="label-extraMessage">
+            </div>
+
+            <button type="submit">Enviar</button>
+        </form>
+
+        <!-- Mensaje de éxito que se muestra cuando el formulario es enviado -->
+        <div id="mensaje-exito">
+            <p>¡Formulario enviado!</p>
+        </div>
+    </section>
+
+    <!-- Pie de página -->
+    <footer>
+        <p>&copy; 2025 Mi Página Web. Samanta Ramos</p>
+    </footer>
+
+</body>
+</html>
+
+
+
